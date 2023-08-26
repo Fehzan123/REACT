@@ -2,7 +2,7 @@
 import './App.css';
 import ExpensItem from './ExpensItem';
 
-function App() {
+const App=()=> {
   const expenses = [
     {
       id: 'e1',
