@@ -1,8 +1,10 @@
 
 import './App.css';
 import ExpensItem from './ExpensItem';
+import ExpenseForm from './ExpenseForm.js';
 
 const App=()=> {
+
   const expenses = [
     {
       id: 'e1',
@@ -29,7 +31,11 @@ const App=()=> {
 
   return (
     <div className="App">
-      <h1>Lets get started!!</h1>
+      <div>
+      <ExpenseForm />
+
+    </div>
+
       <ExpensItem
       title={expenses[0].title}
       amount={expenses[0].amount}
