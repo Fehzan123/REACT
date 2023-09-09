@@ -1,8 +1,12 @@
+
 import React, { useState } from 'react';
 import './App.css';
 import ExpensItem from './ExpensItem';
-import ExpenseForm from './ExpenseForm';
+
 import ExpenseFilter from './ExpenseFilter';
+import NewExpens from './NewExpens';
+
+
 
 const DUMMY_EXPENSE = [
   {
@@ -11,7 +15,12 @@ const DUMMY_EXPENSE = [
     amount: 94.12,
     date: new Date(2020, 7, 14),
   },
-  { id: 'e2', title: 'New TV', amount: 799.49, date: new Date(2021, 2, 12) },
+  {
+    id: 'e2',
+    title: 'New TV',
+    amount: 799.49,
+    date: new Date(2021, 2, 12),
+  },
   {
     id: 'e3',
     title: 'Car Insurance',
@@ -34,31 +43,36 @@ const App = () => {
     setFilteredYear(selectedYear);
   };
 
-  const filteredExpenses = expenses.filter(
-    (expense) => expense.date.getFullYear().toString() === filteredYear
-  );
-
-  const addExpense = (expenseData) => {
-    setExpenses((prevExpenses) => {
-      return [...prevExpenses, expenseData];
-    });
+  let filteredExpenses = expenses;
+  if (filteredYear !== '2020') {
+    filteredExpenses = expenses.filter(
+      (expense) => expense.date.getFullYear().toString() === filteredYear
+    );
+  }
+  const addExpenseHandler = (expense) => {
+    setExpenses((prevExpenses) => [...prevExpenses, expense]);
   };
 
   return (
     <div className="App">
-      <ExpenseForm onSaveExpenseData={addExpense} />
+        {/* <ExpenseForm onSaveExpenseData={addExpenseHandler} /> */}
+      <NewExpens onSaveExpenseData={addExpenseHandler} />
       <ExpenseFilter
         selected={filteredYear}
         onChangeFilter={filterChangeHandler}
       />
-      {filteredExpenses.map((expense) => (
-        <ExpensItem
-          key={expense.id}
-          title={expense.title}
-          amount={expense.amount}
-          date={expense.date}
-        />
-      ))}
+      {filteredExpenses.length > 0 ? (
+        filteredExpenses.map((expense) => (
+          <ExpensItem
+            key={expense.id}
+            title={expense.title}
+            amount={expense.amount}
+            date={expense.date}
+          />
+        ))
+      ) : (
+        <p>No expenses found for the selected year.</p>
+      )}
     </div>
   );
 };
