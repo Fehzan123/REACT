@@ -5,6 +5,8 @@ import ExpensItem from './ExpensItem';
 
 import ExpenseFilter from './ExpenseFilter';
 import NewExpens from './NewExpens';
+import ExpenseChart from './ExpenseChart';
+import './ExpenseList.css';
 
 
 
@@ -37,14 +39,14 @@ const DUMMY_EXPENSE = [
 
 const App = () => {
   const [expenses, setExpenses] = useState(DUMMY_EXPENSE);
-  const [filteredYear, setFilteredYear] = useState('2020');
+  const [filteredYear, setFilteredYear] = useState('All');
 
   const filterChangeHandler = (selectedYear) => {
     setFilteredYear(selectedYear);
   };
 
   let filteredExpenses = expenses;
-  if (filteredYear !== '2020') {
+  if (filteredYear !== 'All') {
     filteredExpenses = expenses.filter(
       (expense) => expense.date.getFullYear().toString() === filteredYear
     );
@@ -55,24 +57,26 @@ const App = () => {
 
   return (
     <div className="App">
+       
         {/* <ExpenseForm onSaveExpenseData={addExpenseHandler} /> */}
       <NewExpens onSaveExpenseData={addExpenseHandler} />
       <ExpenseFilter
         selected={filteredYear}
         onChangeFilter={filterChangeHandler}
-      />
+        />
+      <ExpenseChart expense={filteredExpenses} />
       {filteredExpenses.length > 0 ? (
         filteredExpenses.map((expense) => (
           <ExpensItem
-            key={expense.id}
-            title={expense.title}
-            amount={expense.amount}
-            date={expense.date}
+          key={expense.id}
+          title={expense.title}
+          amount={expense.amount}
+          date={expense.date}
           />
-        ))
-      ) : (
-        <p>No expenses found for the selected year.</p>
-      )}
+          ))
+          ) : (
+            <p>No expenses found for the selected year.</p>
+            )}
     </div>
   );
 };
